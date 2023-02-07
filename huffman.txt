@@ -1,0 +1,68 @@
+//compressed data
+c = 0x00,
+
+// huffman tree
+// could definitely be encoded in a more optimized way
+d = [],
+
+//uncompressed output
+o = '',
+
+// Uncompress, ends when encountering ';'
+u = (index, subtree) => (
+	s = subtree[ (c >> index) & 1 ],
+	s = ';' ?
+		0
+	:
+		s.isArray() ?
+			0
+		: (
+			o += s,
+			s = d
+		),
+		u( index + 1, s)
+),
+
+function freqTable (str, chars = 1) {
+	let table = {};
+	for(i = 0; i < str.length; i++) { //
+		ch = str.substring(i, i + chars - 1);
+		if ( !table.hasOwnProperty(ch) ) table.ch = 1;
+		else table.ch += 1;
+	}
+	return table
+},
+
+function sortTable (table) {
+	let arrayForm = [];
+	for( var key in table) {
+		arrayForm.push( key, table[key] );
+	}
+	arrayForm.sort( (a,b) => b[1] - a[1]); //sort from highest to lowest freuqency
+	return arrayForm
+},
+
+//input is [ reslt of chars=1, result of chars=2 ... ]
+function abridge (arrays) {
+	// lf = least-frequent of the highest-char array
+	// find all the lower-char components
+	// if the frequency of lf is the same as all the lower-char components:
+	//		remove all the lower-char components
+	// else:
+	//		remove lf (?)
+},
+
+function huffmanTree (sortedFreq) {
+	while (sortedFreq.length > 1) {
+		a = sortedFreq.pop();
+		b = sortedFreq.pop();
+		ab = [ [ a[0], b[0] ], a[1] + b[1] ];
+		//if I wanted more elegance I would insert in a way that doesn't require a full sort
+		//but I don't
+		sortedFreq.push(ab);
+		sortedFreq.sort( (a,b) => b[1] - a[1] );
+	}
+	
+},
+
+t
