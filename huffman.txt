@@ -13,15 +13,17 @@ u = (index, subtree) => (
 	s = subtree[ (c >> index) & 1 ],
 	s = ';' ?
 		0
-	:
-		s.isArray() ?
+	: (
+		Array.isArray(s) ?
 			0
 		: (
 			o += s,
 			s = d
 		),
 		u( index + 1, s)
+	)
 ),
+
 
 function freqTable (str, chars = 1) {
 	let table = {};
