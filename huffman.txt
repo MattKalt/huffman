@@ -11,7 +11,7 @@ o = '',
 // Uncompress, ends when encountering ';'
 u = (index, subtree) => (
 	s = subtree[ (c >> index) & 1 ],
-	s = ';' ?
+	s == ';' ?
 		0
 	: (
 		Array.isArray(s) ?
