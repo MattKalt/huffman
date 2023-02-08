@@ -24,6 +24,17 @@ u = (index, subtree) => (
 	)
 ),
 
+// Code used externally to generate huffman encoding:
+
+function freqTable (str, chars = 1) {
+	let table = {};
+	for(i = 0; i < str.length; i++) { //
+		ch = str.substring(i, i + chars - 1);
+		if ( !table.hasOwnProperty(ch) ) table.ch = 1;
+		else table.ch += 1;
+	}
+	return table
+}
 
 function freqTable (str, chars = 1) {
 	let chrs = [];
@@ -44,13 +55,8 @@ function freqTable (str, chars = 1) {
 }
 
 function sortTable (table) {
-	let arrayForm = [];
-	for( var key in table) {
-		arrayForm.push( key, table[key] );
-	}
-	arrayForm.sort( (a,b) => b[1] - a[1]); //sort from highest to lowest freuqency
-	return arrayForm
-},
+	return table.sort( (a,b) => b[1] - a[1]); //sort from highest to lowest freuqency
+}
 
 //input is [ reslt of chars=1, result of chars=2 ... ]
 function abridge (arrays) {
@@ -60,19 +66,21 @@ function abridge (arrays) {
 	//		remove all the lower-char components
 	// else:
 	//		remove lf (?)
-},
+}
 
-function huffmanTree (sortedFreq) {
-	while (sortedFreq.length > 1) {
-		a = sortedFreq.pop();
-		b = sortedFreq.pop();
+function huffmanTree (table) {
+	while (table.length > 1) {
+ 		table.sort( (a,b) => b[1] - a[1] ); //highest to lowest freq
+		a = table.pop();
+		b = table.pop();
 		ab = [ [ a[0], b[0] ], a[1] + b[1] ];
 		//if I wanted more elegance I would insert in a way that doesn't require a full sort
 		//but I don't
-		sortedFreq.push(ab);
-		sortedFreq.sort( (a,b) => b[1] - a[1] );
+		table.push(ab);
 	}
+  return table[0][0]
 	
-},
+}
 
-t
+test = "huffmanf";
+console.log( huffmanTree( freqTable( test, 1 ) ) );
