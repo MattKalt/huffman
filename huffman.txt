@@ -26,9 +26,10 @@ u = (index, subtree) => (
 
 // Code used externally to generate huffman encoding:
 
+
 function freqTable (str, chars = 1) {
 	let table = {};
-	for(i = 0; i < str.length; i++) { //
+	for(let i = 0; i < str.length; i++) { //
 		ch = str.substring(i, i + chars - 1);
 		if ( !table.hasOwnProperty(ch) ) table.ch = 1;
 		else table.ch += 1;
@@ -39,7 +40,7 @@ function freqTable (str, chars = 1) {
 function freqTable (str, chars = 1) {
 	let chrs = [];
   let freqs = [];
-	for(i = 0; i < str.length; i++) { //
+	for(let i = 0; i < str.length; i++) { //
 		ch = str.substring(i, i + chars);
     let idx;
     idx = chrs.indexOf(ch);
@@ -78,9 +79,33 @@ function huffmanTree (table) {
 		//but I don't
 		table.push(ab);
 	}
-  return table[0][0]
-	
+  return table[0][0]	
+}
+
+function encodeChar (ch, subtree, path="") {
+	if (Array.isArray(subtree)) {
+  	let output = "";
+  	output += encodeChar (ch, subtree[0], path + '0'); 
+  	output += encodeChar (ch, subtree[1], path + '1'); 
+		return output
+	} else if ( ch == subtree ) {
+  	return path
+	} else {
+  	return ""
+  }
+}
+
+function encode (text, huffTree) {
+	let output = "";
+  for (let i=0; i < text.length; i++) {
+  	ch = text.substring( i, i + 1 );
+  	output += encodeChar( ch, huffTree);
+  }
+  return output
 }
 
 test = "huffmanf";
-console.log( huffmanTree( freqTable( test, 1 ) ) );
+testTree = huffmanTree( freqTable( test, 1 ) );
+testEncoding = encode( test, testTree );
+console.log( testTree );
+console.log( testEncoding );
