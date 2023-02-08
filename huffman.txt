@@ -26,14 +26,22 @@ u = (index, subtree) => (
 
 
 function freqTable (str, chars = 1) {
-	let table = {};
+	let chrs = [];
+  let freqs = [];
 	for(i = 0; i < str.length; i++) { //
-		ch = str.substring(i, i + chars - 1);
-		if ( !table.hasOwnProperty(ch) ) table.ch = 1;
-		else table.ch += 1;
+		ch = str.substring(i, i + chars);
+    let idx;
+    idx = chrs.indexOf(ch);
+		if ( idx == -1) {
+    	chrs.push(ch);
+      freqs.push(1);
+    }
+		else freqs[idx] += 1;
 	}
-	return table
-},
+	let table = [];
+  chrs.forEach( (e, i) => table.push( [chrs[i], freqs[i] ] ) );
+  return table;
+}
 
 function sortTable (table) {
 	let arrayForm = [];
