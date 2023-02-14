@@ -83,10 +83,11 @@ function encode (text, huffTree, chars = 1) {
 }
 
 function bin2charCode (bin, bytes) {
-	let chunks = Math.ceil( bin / bytes);
+	let chunks = Math.ceil( bin.length / bytes);
   let output = "";
   for( let i = 0; i < chunks; i++) {
   	let chk = bin.substring( i * bytes, (i + 1) * bytes);
+    chk = chk.split("").reverse().join("");
     let cc = parseInt( chk, 2);
     output += String.fromCharCode( cc );
   }
@@ -106,10 +107,14 @@ console.log( testEncoding );
 c = testEncoding;
 //c = testEncoding.split("").reverse().join("");
 
-//console.log(c);
+console.log(c);
 
-console.log( bin2charCode( c, 1));
-console.log( bin2charCode( c, 2));
+c2 = bin2charCode( c, 16);
+console.log(c2);
+
+//console.log( bin2charCode( c, 1));
+
+//console.log( bin2charCode( c, 2));
 
 
 d = testTree;
@@ -118,7 +123,8 @@ o = "";
 
 u = (index, subtree) => (
 	//s = subtree[ (c >> index) & 1 ], //c as number
-  s = subtree[ c[ index ] | 0],
+  //s = subtree[ c[ index ] | 0],
+  s = subtree[ c2.charCodeAt(index / 16) >> (index % 16) & 1],
 	s == ';' ?
 		0
 	: (
