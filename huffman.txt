@@ -82,6 +82,17 @@ function encode (text, huffTree, chars = 1) {
   return output
 }
 
+function bin2charCode (bin, bytes) {
+	let chunks = Math.ceil( bin / bytes);
+  let output = "";
+  for( let i = 0; i < chunks; i++) {
+  	let chk = bin.substring( i * bytes, (i + 1) * bytes);
+    let cc = parseInt( chk, 2);
+    output += String.fromCharCode( cc );
+  }
+	return output
+} 
+
 test = "huffman;";
 //testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
 testTable = freqTable( test, 1);
@@ -95,7 +106,11 @@ console.log( testEncoding );
 c = testEncoding;
 //c = testEncoding.split("").reverse().join("");
 
-console.log(c);
+//console.log(c);
+
+console.log( bin2charCode( c, 1));
+console.log( bin2charCode( c, 2));
+
 
 d = testTree;
 
