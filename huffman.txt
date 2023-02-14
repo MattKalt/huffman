@@ -57,8 +57,8 @@ function huffmanTree (table) {
 function encodeChar (ch, subtree, path="") {
 	if (Array.isArray(subtree)) {
   	let output = "";
-  	output += encodeChar (ch, subtree[0], '0' + path); 
-  	output += encodeChar (ch, subtree[1], '1' + path); 
+  	output += encodeChar (ch, subtree[0], path + '0'); 
+  	output += encodeChar (ch, subtree[1], path + '1'); 
 		return output
 	} else if ( ch == subtree ) {
   	return path
@@ -76,21 +76,24 @@ function encode (text, huffTree, chars = 1) {
     	e = encode( ch, huffTree, chars - 1);
     	chars--;
     }
-    output = e + output;
-  	//output = encodeChar( ch, huffTree) + output;
+    //output = e + output;
+    output += e;
 	}
   return output
 }
 
 test = "huffman;";
-testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
+//testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
+testTable = freqTable( test, 1);
 testTree = huffmanTree( testTable );
 //testTree = huffmanTree( freqTable( test, 1 ) );
-testEncoding = encode( test, testTree, 2 );
+testEncoding = encode( test, testTree, 1 );
 console.log( testTree );
 console.log( testEncoding );
 
-c = eval( '0b' + testEncoding);
+//c = eval( '0b' + testEncoding);
+c = testEncoding;
+//c = testEncoding.split("").reverse().join("");
 
 console.log(c);
 
@@ -99,7 +102,8 @@ d = testTree;
 o = "";
 
 u = (index, subtree) => (
-	s = subtree[ (c >> index) & 1 ],
+	//s = subtree[ (c >> index) & 1 ], //c as number
+  s = subtree[ c[ index ] | 0],
 	s == ';' ?
 		0
 	: (
