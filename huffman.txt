@@ -67,19 +67,26 @@ function encodeChar (ch, subtree, path="") {
   }
 }
 
-function encode (text, huffTree) {
+function encode (text, huffTree, chars = 1) {
 	let output = "";
-  for (let i=0; i < text.length; i++) {
-  	ch = text.substring( i, i + 1 );
-  	//output += encodeChar( ch, huffTree);
-  	output = encodeChar( ch, huffTree) + output;
+  for (let i=0; i < text.length; i += chars) {
+  	ch = text.substring( i, i + chars );
+    e = encodeChar( ch, huffTree);
+    while (e == "" && chars > 1) {
+    	e = encode( ch, huffTree, chars - 1);
+    	chars--;
+    }
+    output = e + output;
+  	//output = encodeChar( ch, huffTree) + output;
 	}
   return output
 }
 
 test = "huffman;";
-testTree = huffmanTree( freqTable( test, 1 ) );
-testEncoding = encode( test, testTree );
+testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
+testTree = huffmanTree( testTable );
+//testTree = huffmanTree( freqTable( test, 1 ) );
+testEncoding = encode( test, testTree, 2 );
 console.log( testTree );
 console.log( testEncoding );
 
