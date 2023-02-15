@@ -14,6 +14,7 @@ function freqTable (str, chars = 1) {
   let freqs = [];
 	for(let i = 0; i < str.length; i++) { //
 		ch = str.substring(i, i + chars);
+		//renders > as " &gt; "
     let idx;
     idx = chrs.indexOf(ch);
 		if ( idx == -1) {
@@ -89,12 +90,13 @@ function bin2charCode (bin, bytes) {
   	let chk = bin.substring( i * bytes, (i + 1) * bytes);
     chk = chk.split("").reverse().join("");
     let cc = parseInt( chk, 2);
-    output += String.fromCharCode( cc );
+    output += String.fromCodePoint( cc );
   }
 	return output
 } 
 
-test = "huffman;";
+test = `(t>>t%(t&1?t>>15&1?51:t>>14&3?58:65:39)&t>>4&255)/2+(3e5/(t-(t>>2&1024)&4095)&63)+(t>>11&1)*((t>>15&1?19:t>>14&3?17:15)/10*t%78+((t>>9&3)+2)*(t>>15&1?30:t>>14&3?27:20)/20*t%39)/1.5;`;
+
 //testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
 testTable = freqTable( test, 1);
 testTree = huffmanTree( testTable );
@@ -104,13 +106,13 @@ console.log( testTree );
 console.log( testEncoding );
 
 //c = eval( '0b' + testEncoding);
-c = testEncoding;
+//c = testEncoding;
 //c = testEncoding.split("").reverse().join("");
 
-console.log(c);
+//console.log(c);
 
-c2 = bin2charCode( c, 16);
-console.log(c2);
+c = bin2charCode( testEncoding, 16);
+console.log(c);
 
 //console.log( bin2charCode( c, 1));
 
@@ -124,7 +126,7 @@ o = "";
 u = (index, subtree) => (
 	//s = subtree[ (c >> index) & 1 ], //c as number
   //s = subtree[ c[ index ] | 0],
-  s = subtree[ c2.charCodeAt(index / 16) >> (index % 16) & 1],
+  s = subtree[ c.charCodeAt(index / 16) >> (index % 16) & 1],
 	s == ';' ?
 		0
 	: (
