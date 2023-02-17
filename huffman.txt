@@ -32,6 +32,7 @@ function sortTable (table) {
 	return table.sort( (a,b) => b[1] - a[1]); //sort from highest to lowest freuqency
 }
 
+//TODO
 //input is [ reslt of chars=1, result of chars=2 ... ]
 function abridge (arrays) {
 	// lf = least-frequent of the highest-char array
@@ -95,28 +96,37 @@ function bin2charCode (bin, bytes) {
 	return output
 } 
 
+
+/*the technique used in bytebeats featuring
+    "unescape(escape(str).replace(/u(..)/g,"$1%"))" */
+//(also, don't use toString() on the Huffman tree, it flattens it)
+function minibake ( str ){
+    str = str.replace( /, /g, ",");
+    let len = Math.floor( str.length / 2 );
+    let output = "";
+    for(i=0; i<len; i++){
+        c1 = str.substring( i * 2, i * 2 + 1);
+        c2 = str.substring( i * 2 + 1, i * 2 + 2);
+        cc1 = c1.charCodeAt(0);
+        cc2 = c2.charCodeAt(0);
+        cmb = (cc1 << 8) | cc2;
+        //output += String.fromCharCode(cmb);
+        output += String.fromCodePoint(cmb);
+    }
+    return output;
+}
+
 test = `(t>>t%(t&1?t>>15&1?51:t>>14&3?58:65:39)&t>>4&255)/2+(3e5/(t-(t>>2&1024)&4095)&63)+(t>>11&1)*((t>>15&1?19:t>>14&3?17:15)/10*t%78+((t>>9&3)+2)*(t>>15&1?30:t>>14&3?27:20)/20*t%39)/1.5;`;
 
-//testTable = [ freqTable( test, 1), freqTable( test, 2) ].flat();
 testTable = freqTable( test, 1);
 testTree = huffmanTree( testTable );
-//testTree = huffmanTree( freqTable( test, 1 ) );
 testEncoding = encode( test, testTree, 1 );
 console.log( testTree );
 console.log( testEncoding );
 
-//c = eval( '0b' + testEncoding);
-//c = testEncoding;
-//c = testEncoding.split("").reverse().join("");
-
-//console.log(c);
 
 c = bin2charCode( testEncoding, 16);
 console.log(c);
-
-//console.log( bin2charCode( c, 1));
-
-//console.log( bin2charCode( c, 2));
 
 
 d = testTree;
@@ -124,8 +134,7 @@ d = testTree;
 o = "";
 
 u = (index, subtree) => (
-	//s = subtree[ (c >> index) & 1 ], //c as number
-  //s = subtree[ c[ index ] | 0],
+  //s = subtree[ (c >> index) & 1 ], //c as number
   s = subtree[ c.charCodeAt(index / 16) >> (index % 16) & 1],
 	s == ';' ?
 		0
