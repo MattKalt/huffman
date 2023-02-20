@@ -171,11 +171,30 @@ u = (index, subtree) => (
 
 //u( 0, d );
 
-i=0;c="";
+i=0;c="";t=0;
+
+tbl = tree2Table( testTree );
+console.log( tbl );
+H = tbl[0];
+C = tbl[1];
 
 U = () => (
-	c += z.charCodeAt(index / 16) >> (index % 16) & 1,
-  
+	c += z.charCodeAt( i / 16 ) >> ( i % 16 ) & 1,
+  R || (
+  	H.map( ( e, j ) => (
+    	C.charCodeAt( j ) == c.parseInt( 2 ) && (
+      	e == ";" ?
+        	R = 1
+        : (
+        	o += e,
+          c = ""
+        )
+      ), e
+    ))
+  ),
+  t * 256 > i ? U() : 0
 );
+
+while ( R == 0 && t < 99 ) { U(); t++ }
 
 console.log( o );
