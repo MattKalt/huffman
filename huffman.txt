@@ -129,6 +129,7 @@ function tree2Table ( tree ) {
       if ( path.length > longest ) {
       	longest = path.length;
       }
+      path = path.split("").reverse().join("");
       codes.push( String.fromCharCode( parseInt( path, 2 ) ) );
     } 
   }
@@ -171,7 +172,7 @@ u = (index, subtree) => (
 
 //u( 0, d );
 
-i=0;c="";t=0;
+i=0;c="";t=0;R=0;
 
 tbl = tree2Table( testTree );
 console.log( tbl );
@@ -181,17 +182,21 @@ C = tbl[1];
 U = () => (
 	c += z.charCodeAt( i / 16 ) >> ( i % 16 ) & 1,
   R || (
-  	H.map( ( e, j ) => (
-    	C.charCodeAt( j ) == c.parseInt( 2 ) && (
-      	e == ";" ?
-        	R = 1
-        : (
-        	o += e,
-          c = ""
+  	d = 0,
+  	H.split("").map( ( e, j ) => (
+    	d || (
+    		//C.charCodeAt( j ) == parseInt( c, 2 ) && (
+      		e == ";" ?
+        		R = 1
+        	: (
+        		o += e,
+          	c = ""
+        	)
         )
       ), e
     ))
   ),
+  i++,
   t * 256 > i ? U() : 0
 );
 
