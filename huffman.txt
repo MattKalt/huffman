@@ -96,6 +96,18 @@ function bin2charCode (bin, bytes) {
 	return output
 } 
 
+//takes the output of console.log for the huffman tree
+function shortenArray (arStr) {
+    let a = arStr;
+    a = a.replace( /"[\[\], ]"/g, "`$&`");
+    a = a.replace( /, /g, "," );
+    a = a.replace( /"/g, "");
+    a = a.replace( /&amp;/g, `&` );
+    a = a.replace( /&gt;/g, `>` );
+    a = a.replace( /&lt;/g, `<` );
+    a = a.replace( /&quot;/g, `"` );
+    return a;
+}
 
 /*the technique used in bytebeats featuring
     "unescape(escape(str).replace(/u(..)/g,"$1%"))" */
